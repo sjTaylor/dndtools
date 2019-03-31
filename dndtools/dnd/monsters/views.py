@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import MonsterFilter
 from dnd.models import Rulebook, Monster
 from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect_object
 
@@ -11,6 +10,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect
 @menu_item(MenuItem.BESTIARY)
 @submenu_item(MenuItem.Bestiary.MONSTERS)
 def monster_index(request):
+    from dnd.filters import MonsterFilter
     f = MonsterFilter(request.GET, queryset=Monster.objects.select_related(
         'rulebook', 'rulebook__dnd_edition', 'school').distinct())
 
@@ -76,7 +76,7 @@ def monster_detail(request, rulebook_slug, rulebook_id, monster_slug, monster_id
                                        'type', ),
         pk=monster_id)
     if (monster.slug != monster_slug or
-                unicode(monster.rulebook.id) != rulebook_id or
+                str(monster.rulebook.id) != rulebook_id or
                 monster.rulebook.slug != rulebook_slug):
         return permanent_redirect_object(request, monster)
 

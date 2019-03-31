@@ -21,3 +21,9 @@ env
 /dndtools/_schema-migration-2-migrate.bat
 /dndtools/static/media/race/*.jpg
 /dndtools/dndproject/local.py
+
+venv
+scratchdb.sqlite3
+*egg-info
+dndtools/db.sqlite3
+scratch

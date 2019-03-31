@@ -4,7 +4,6 @@ from django.template.context import RequestContext
 from dnd.menu import MenuItem
 from dnd.menu import menu_item, submenu_item
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import (   RaceFilter, RaceTypeFilter )
 
 from dnd.models import (Rulebook, Race, RaceType )
 from dnd.views import is_3e_edition, permanent_redirect_view
@@ -13,6 +12,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view
 @menu_item(MenuItem.BESTIARY)
 @submenu_item(MenuItem.Bestiary.RACES)
 def race_index(request):
+    from dnd.filters import RaceFilter
     f = RaceFilter(request.GET, queryset=Race.objects.select_related(
         'rulebook', 'rulebook__dnd_edition', 'school').distinct())
 
@@ -80,7 +80,7 @@ def race_detail(request, rulebook_slug, rulebook_id, race_slug, race_id):
     assert isinstance(race, Race)
 
     if (race.slug != race_slug or
-                unicode(race.rulebook.id) != rulebook_id or
+                str(race.rulebook.id) != rulebook_id or
                 race.rulebook.slug != rulebook_slug):
         return permanent_redirect_view(request, 'race_detail',
                                        kwargs={
@@ -114,6 +114,7 @@ def race_detail(request, rulebook_slug, rulebook_id, race_slug, race_id):
 @menu_item(MenuItem.BESTIARY)
 @submenu_item(MenuItem.Bestiary.RACE_TYPES)
 def race_type_index(request):
+    from dnd.filters import RaceTypeFilter
     f = RaceTypeFilter(request.GET, queryset=RaceType.objects.distinct())
 
     paginator = DndPaginator(f.qs, request)

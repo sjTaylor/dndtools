@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from dnd.deities.views import *
 
-
-urlpatterns = patterns(
-    'dnd.deities.views',
+urlpatterns = (
+    # 'dnd.deities.views',
 
     # deities
     url(
         r'^$',
-        'deity_list',
+        deity_list,
         name='deity_list',
     ),
     # deities > detail
     url(
         r'^(?P<deity_slug>[^/]+)/$',
-        'deity_detail',
+        deity_detail,
         name='deity_detail',
     ),
 )

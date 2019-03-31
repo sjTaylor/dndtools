@@ -1,10 +1,10 @@
 from itertools import chain
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django import forms
 from django.db.models.fields import BLANK_CHOICE_DASH
-from django.forms.widgets import flatatt
-from django.utils.encoding import force_unicode
+from django.forms.utils import flatatt
+# from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
@@ -33,7 +33,7 @@ class LinkWidget(forms.Widget):
         return mark_safe(u'\n'.join(output))
 
     def render_options(self, choices, selected_choices, name):
-        selected_choices = set(force_unicode(v) for v in selected_choices)
+        selected_choices = set(str(v) for v in selected_choices)
         output = []
         for option_value, option_label in chain(self.choices, choices):
             if isinstance(option_label, (list, tuple)):
@@ -44,7 +44,7 @@ class LinkWidget(forms.Widget):
         return u'\n'.join(output)
 
     def render_option(self, name, selected_choices, option_value, option_label):
-        option_value = force_unicode(option_value)
+        option_value = str(option_value)
         if option_label == BLANK_CHOICE_DASH[0][1]:
             option_label = _("All")
         data = self.data.copy()
@@ -57,7 +57,7 @@ class LinkWidget(forms.Widget):
         return self.option_string() % {
              'attrs': selected and ' class="selected"' or '',
              'query_string': url,
-             'label': force_unicode(option_label)
+             'label': str(option_label)
         }
 
     def option_string(self):

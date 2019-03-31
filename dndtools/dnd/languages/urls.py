@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from dnd.languages.views import *
 
-
-urlpatterns = patterns(
-    'dnd.languages.views',
+urlpatterns = (
+    # 'dnd.languages.views',
 
     # languages
     url(
         r'^$',
-        'language_index',
+        language_index,
         name='language_index'
     ),
     # languages > detail
     url(
         r'^(?P<language_slug>[^/]+)/$',
-        'language_detail',
+        language_detail,
         name='language_detail'
     ),
 )

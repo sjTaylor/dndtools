@@ -5,7 +5,6 @@ from django.template.context import RequestContext
 from dnd.menu import MenuItem
 from dnd.menu import menu_item, submenu_item
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import CharacterClassFilter
 from dnd.models import Rulebook, Spell, CharacterClass, CharacterClassVariant
 from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect_object
 
@@ -13,6 +12,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect
 @menu_item(MenuItem.CHARACTER_OPTIONS)
 @submenu_item(MenuItem.CharacterOptions.CLASSES)
 def character_class_list(request):
+    from dnd.filters import CharacterClassFilter
     f = CharacterClassFilter(
         request.GET,
         queryset=CharacterClassVariant.objects.select_related(

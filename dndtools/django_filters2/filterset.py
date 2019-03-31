@@ -4,8 +4,8 @@ from django import forms
 from django.db import models
 from django.db.models import Q
 from django.db.models.fields import FieldDoesNotExist
-from django.db.models.related import RelatedObject
-from django.utils.datastructures import SortedDict
+from django.db.models.fields.related import ForeignObjectRel
+from collections import OrderedDict as SortedDict
 from django.utils.text import capfirst
 
 from django_filters2.filters import Filter, CharFilter, BooleanFilter, \
@@ -43,7 +43,7 @@ def get_model_field(model, f):
             rel = opts.get_field_by_name(name)[0]
         except FieldDoesNotExist:
             return None
-        if isinstance(rel, RelatedObject):
+        if isinstance(rel, ForeignObjectRel):
             model = rel.model
             opts = rel.opts
         else:

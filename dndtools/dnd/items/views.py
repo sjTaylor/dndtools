@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import ItemFilter
 from dnd.models import Rulebook, Item
 from dnd.utilities import int_with_commas
 from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect_object
@@ -13,6 +12,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect
 @menu_item(MenuItem.ITEMS)
 @submenu_item(MenuItem.Items.MAGICAL)
 def item_index(request):
+    from dnd.filters import ItemFilter
     f = ItemFilter(request.GET, queryset=Item.objects.select_related(
         'rulebook', 'rulebook__dnd_edition', 'body_slot', 'property').distinct())
 
@@ -80,7 +80,7 @@ def item_detail(request, rulebook_slug, rulebook_id, item_slug, item_id):
     assert isinstance(item, Item)
 
     if (item.slug != item_slug or
-                unicode(item.rulebook.id) != rulebook_id or
+                str(item.rulebook.id) != rulebook_id or
                 item.rulebook.slug != rulebook_slug):
         return permanent_redirect_object(request, item)
 

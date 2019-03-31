@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
-import exceptions
+# import exceptions
 from django.template.context import Context
 from django.template.loader import get_template
 
@@ -22,7 +22,7 @@ class DndPaginator():
                 if ps in self.available_page_sizes:
                     self.page_size = ps
                     request.session['page_size'] = ps
-            except exceptions.ValueError:
+            except ValueError:
                 pass
 
         try:

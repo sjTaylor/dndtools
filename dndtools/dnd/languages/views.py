@@ -4,13 +4,13 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import LanguageFilter
 from dnd.models import Race, Language
 
 
 @menu_item(MenuItem.CHARACTER_OPTIONS)
 @submenu_item(MenuItem.CharacterOptions.LANGUAGES)
 def language_index(request):
+    from dnd.filters import LanguageFilter
     f = LanguageFilter(request.GET, queryset=Language.objects.distinct())
 
     paginator = DndPaginator(f.qs, request)

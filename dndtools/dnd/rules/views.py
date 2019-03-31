@@ -2,7 +2,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import RuleFilter
 from dnd.menu import menu_item, MenuItem, submenu_item
 from dnd.views import permanent_redirect_object
 from dnd.models import Rule
@@ -12,6 +11,7 @@ from dnd.views import is_3e_edition
 @menu_item(MenuItem.RULEBOOKS)
 @submenu_item(MenuItem.Rulebooks.RULES)
 def rule_list(request):
+    from dnd.filters import RuleFilter
     f = RuleFilter(request.GET, queryset=Rule.objects.all())
 
     form_submitted = 1 if '_filter' in request.GET else 0

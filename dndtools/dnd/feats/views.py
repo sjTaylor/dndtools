@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import FeatFilter
 from dnd.models import Rulebook, FeatCategory, Feat
 from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect_object
 
@@ -12,6 +11,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect
 @menu_item(MenuItem.CHARACTER_OPTIONS)
 @submenu_item(MenuItem.CharacterOptions.FEATS)
 def feat_index(request):
+    from dnd.filters import FeatFilter
     f = FeatFilter(request.GET, queryset=Feat.objects.select_related(
         'rulebook', 'rulebook__dnd_edition').distinct())
 

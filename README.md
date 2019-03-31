@@ -17,7 +17,7 @@ We will install the project in a virtual environment.
 Virtualenvs allow to easily isolate the project dependencies from your system install.
 
 The following instruction were tested on Linux, but should work on OSX and Windows as well.
-The only requirements are Python 2.7 and Virtualenv.
+The only requirements are Python 3 and Virtualenv.
 
 To install DnDTools, run the following commands:
 

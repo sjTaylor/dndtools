@@ -3,13 +3,13 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import DeityFilter
 from dnd.models import Deity
 
 
 @menu_item(MenuItem.CHARACTER_OPTIONS)
 @submenu_item(MenuItem.CharacterOptions.DEITIES)
 def deity_list(request):
+    from dnd.filters import DeityFilter
     f = DeityFilter(request.GET, queryset=Deity.objects.all())
 
     form_submitted = 1 if '_filter' in request.GET else 0

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.core.mail.message import EmailMessage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.forms import InaccurateContentForm
 from dnd.models import NewsEntry
+from django.shortcuts import render
 
 
 def permanent_redirect_view(request, view_name, args=None, kwargs=None):
@@ -44,11 +45,12 @@ def is_admin(request):
 def index(request):
     news_entries = NewsEntry.objects.filter(enabled=True).order_by('-published')[:15]
 
-    response = render_to_response('dnd/index.html',
-                                  {
-                                      'request': request, 'news_entries': news_entries,
-                                  },
-                                  context_instance=RequestContext(request), )
+    # response = render_to_response('dnd/index.html',
+    #                               ,
+    #                               context_instance=RequestContext(request), )
+    context = {'news_entries': news_entries, }
+
+    response = render(request, 'dnd/index.html', context)
 
     if len(news_entries):
         response.set_cookie('top_news', news_entries[0].pk, 10 * 365 * 24 * 60 * 60)

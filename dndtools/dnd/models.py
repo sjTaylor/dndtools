@@ -3,8 +3,9 @@
 from PIL import Image
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 
-from dnd.utilities import update_html_cache_attributes
+from .utilities import update_html_cache_attributes
 
 
 class DndEdition(models.Model):
@@ -27,9 +28,8 @@ class DndEdition(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'edition_detail', (),
             {
                 'edition_slug': self.slug,
@@ -37,9 +37,8 @@ class DndEdition(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'edition_detail_mobile', (),
             {
                 'edition_slug': self.slug,
@@ -50,7 +49,7 @@ class DndEdition(models.Model):
 
 class Rulebook(models.Model):
     dnd_edition = models.ForeignKey(
-        DndEdition,
+        DndEdition, models.CASCADE,
     )
     name = models.CharField(
         max_length=128,
@@ -93,9 +92,8 @@ class Rulebook(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'rulebook_detail', (),
             {
                 'edition_slug': self.dnd_edition.slug,
@@ -105,9 +103,8 @@ class Rulebook(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'rulebook_detail_mobile', (),
             {
                 'edition_slug': self.dnd_edition.slug,
@@ -148,18 +145,16 @@ class CharacterClass(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'character_class_detail', (),
             {
                 'character_class_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'character_class_detail_mobile', (),
             {
                 'character_class_slug': self.slug,
@@ -169,10 +164,10 @@ class CharacterClass(models.Model):
 
 class CharacterClassVariant(models.Model):
     character_class = models.ForeignKey(
-        CharacterClass,
+        CharacterClass, models.CASCADE,
     )
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     page = models.PositiveSmallIntegerField(
         null=True,
@@ -244,9 +239,8 @@ class CharacterClassVariant(models.Model):
     def __unicode__(self):
         return "%s variant (%s)" % (self.character_class.name, self.rulebook.name)
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'character_class_variant_detail', (),
             {
                 'rulebook_slug': self.rulebook.slug,
@@ -255,9 +249,8 @@ class CharacterClassVariant(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'character_class_variant_detail_mobile', (),
             {
                 'rulebook_slug': self.rulebook.slug,
@@ -269,11 +262,11 @@ class CharacterClassVariant(models.Model):
 
 class CharacterClassVariantRequiresRace(models.Model):
     character_class_variant = models.ForeignKey(
-        CharacterClassVariant,
+        CharacterClassVariant, models.CASCADE,
         related_name='required_races',
     )
     race = models.ForeignKey(
-        'Race',
+        'Race', models.CASCADE,
     )
     extra = models.CharField(
         blank=True,
@@ -296,11 +289,11 @@ class CharacterClassVariantRequiresRace(models.Model):
 
 class CharacterClassVariantRequiresFeat(models.Model):
     character_class_variant = models.ForeignKey(
-        CharacterClassVariant,
+        CharacterClassVariant, models.CASCADE,
         related_name='required_feats',
     )
     feat = models.ForeignKey(
-        'Feat',
+        'Feat', models.CASCADE,
     )
     extra = models.CharField(
         blank=True,
@@ -323,11 +316,11 @@ class CharacterClassVariantRequiresFeat(models.Model):
 
 class CharacterClassVariantRequiresSkill(models.Model):
     character_class_variant = models.ForeignKey(
-        CharacterClassVariant,
+        CharacterClassVariant, models.CASCADE,
         related_name='required_skills',
     )
     skill = models.ForeignKey(
-        'Skill',
+        'Skill', models.CASCADE,
     )
     ranks = models.PositiveSmallIntegerField(
 
@@ -378,7 +371,7 @@ class Deity(models.Model):
     )
 
     favored_weapon = models.ForeignKey(
-        'Item',
+        'Item', models.CASCADE,
         blank=True,
         null=True,
     )
@@ -394,18 +387,16 @@ class Deity(models.Model):
         update_html_cache_attributes(self, 'description')
         super(Deity, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'deity_detail', (),
             {
                 'deity_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'deity_detail_mobile', (),
             {
                 'deity_slug': self.slug,
@@ -429,18 +420,16 @@ class Domain(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'spell_domain_detail', (),
             {
                 'spell_domain_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'spell_domain_detail_mobile', (),
             {
                 'spell_domain_slug': self.slug,
@@ -450,11 +439,11 @@ class Domain(models.Model):
 
 class DomainVariant(models.Model):
     domain = models.ForeignKey(
-        Domain,
+        Domain, models.CASCADE,
     )
 
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     page = models.PositiveSmallIntegerField(
         null=True,
@@ -503,9 +492,8 @@ class DomainVariant(models.Model):
         update_html_cache_attributes(self, 'granted_power')
         super(DomainVariant, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'spell_variant_domain_detail', (),
             {
                 'rulebook_slug': self.rulebook.slug,
@@ -514,9 +502,8 @@ class DomainVariant(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'spell_variant_domain_detail_mobile', (),
             {
                 'rulebook_slug': self.rulebook.slug,
@@ -543,18 +530,16 @@ class SpellDescriptor(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'spell_descriptor_detail', (),
             {
                 'spell_descriptor_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'spell_descriptor_detail_mobile', (),
             {
                 'spell_descriptor_slug': self.slug,
@@ -578,18 +563,16 @@ class SpellSchool(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'spell_school_detail', (),
             {
                 'spell_school_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'spell_school_detail_mobile', (),
             {
                 'spell_school_slug': self.slug,
@@ -613,18 +596,16 @@ class SpellSubSchool(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'spell_sub_school_detail', (),
             {
                 'spell_sub_school_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'spell_sub_school_detail_mobile', (),
             {
                 'spell_sub_school_slug': self.slug,
@@ -637,7 +618,7 @@ class Spell(models.Model):
         auto_now_add=True,
     )
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     page = models.PositiveSmallIntegerField(
         null=True,
@@ -651,10 +632,10 @@ class Spell(models.Model):
         max_length=64,
     )
     school = models.ForeignKey(
-        SpellSchool,
+        SpellSchool, models.CASCADE,
     )
     sub_school = models.ForeignKey(
-        SpellSubSchool,
+        SpellSubSchool, models.CASCADE,
         null=True,
         blank=True,
     )
@@ -750,7 +731,7 @@ class Spell(models.Model):
         default=False,
     )
     verified_author = models.ForeignKey(
-        to=User,
+        to=User, on_delete=models.CASCADE,
         blank=True,
         null=True,
     )
@@ -770,9 +751,8 @@ class Spell(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'spell_detail', (),
             {
                 'spell_slug': self.slug,
@@ -782,9 +762,8 @@ class Spell(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'spell_detail_mobile', (),
             {
                 'spell_slug': self.slug,
@@ -797,10 +776,10 @@ class Spell(models.Model):
 
 class SpellClassLevel(models.Model):
     character_class = models.ForeignKey(
-        CharacterClass,
+        CharacterClass, models.CASCADE,
     )
     spell = models.ForeignKey(
-        Spell,
+        Spell, models.CASCADE,
     )
     level = models.PositiveSmallIntegerField()
     extra = models.CharField(
@@ -815,10 +794,10 @@ class SpellClassLevel(models.Model):
 
 class SpellDomainLevel(models.Model):
     domain = models.ForeignKey(
-        Domain,
+        Domain, models.CASCADE,
     )
     spell = models.ForeignKey(
-        Spell,
+        Spell, models.CASCADE,
     )
     level = models.PositiveSmallIntegerField()
     extra = models.CharField(
@@ -848,18 +827,16 @@ class FeatCategory(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'feat_category_detail', (),
             {
                 'category_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'feat_category_detail_mobile', (),
             {
                 'category_slug': self.slug,
@@ -895,18 +872,16 @@ class Skill(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'skill_detail', (),
             {
                 'skill_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'skill_detail_mobile', (),
             {
                 'skill_slug': self.slug,
@@ -916,10 +891,10 @@ class Skill(models.Model):
 
 class SkillVariant(models.Model):
     skill = models.ForeignKey(
-        Skill,
+        Skill, models.CASCADE,
     )
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     page = models.PositiveSmallIntegerField(
         null=True,
@@ -1009,9 +984,8 @@ class SkillVariant(models.Model):
     def __unicode__(self):
         return "%s variant (%s)" % (self.skill.name, self.rulebook.name)
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'skill_variant_detail', (),
             {
                 'rulebook_slug': self.rulebook.slug,
@@ -1020,9 +994,8 @@ class SkillVariant(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'skill_variant_detail_mobile', (),
             {
                 'rulebook_slug': self.rulebook.slug,
@@ -1050,7 +1023,7 @@ class SpecialFeatPrerequisite(models.Model):
 
 class Feat(models.Model):
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
 
     feat_categories = models.ManyToManyField(
@@ -1117,9 +1090,8 @@ class Feat(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'feat_detail', (),
             {
                 'feat_slug': self.slug,
@@ -1129,9 +1101,8 @@ class Feat(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'feat_detail_mobile', (),
             {
                 'feat_slug': self.slug,
@@ -1144,7 +1115,7 @@ class Feat(models.Model):
 
 class TextFeatPrerequisite(models.Model):
     feat = models.ForeignKey(
-        Feat,
+        Feat, models.CASCADE,
     )
     text = models.CharField(
         max_length=256,
@@ -1159,10 +1130,10 @@ class TextFeatPrerequisite(models.Model):
 
 class FeatSpecialFeatPrerequisite(models.Model):
     feat = models.ForeignKey(
-        Feat,
+        Feat, models.CASCADE,
     )
     special_feat_prerequisite = models.ForeignKey(
-        SpecialFeatPrerequisite,
+        SpecialFeatPrerequisite, models.CASCADE,
     )
     value_1 = models.CharField(
         max_length=256,
@@ -1189,11 +1160,11 @@ class FeatSpecialFeatPrerequisite(models.Model):
 
 class FeatRequiresFeat(models.Model):
     source_feat = models.ForeignKey(
-        Feat,
+        Feat, models.CASCADE,
         related_name='required_feats',
     )
     required_feat = models.ForeignKey(
-        Feat,
+        Feat, models.CASCADE,
         related_name='required_by_feats',
     )
     additional_text = models.CharField(
@@ -1204,11 +1175,11 @@ class FeatRequiresFeat(models.Model):
 
 class FeatRequiresSkill(models.Model):
     feat = models.ForeignKey(
-        Feat,
+        Feat, models.CASCADE,
         related_name='required_skills',
     )
     skill = models.ForeignKey(
-        Skill,
+        Skill, models.CASCADE,
     )
     extra = models.CharField(
         blank=True,
@@ -1246,18 +1217,16 @@ class Language(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'language_detail', (),
             {
                 'language_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'language_detail_mobile', (),
             {
                 'language_slug': self.slug,
@@ -1335,18 +1304,16 @@ class MonsterType(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'monster_type_detail', (),
             {
                 'slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'monster_type_detail_mobile', (),
             {
                 'slug': self.slug,
@@ -1370,18 +1337,16 @@ class MonsterSubtype(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'monster_subtype_detail', (),
             {
                 'slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
-        return (
+        return reverse(
             'monster_subtype_detail_mobile', (),
             {
                 'slug': self.slug,
@@ -1391,7 +1356,7 @@ class MonsterSubtype(models.Model):
 
 class Monster(models.Model):
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     name = models.CharField(
         max_length=32,
@@ -1406,12 +1371,12 @@ class Monster(models.Model):
     )
 
     size = models.ForeignKey(
-        RaceSize,
+        RaceSize, models.CASCADE,
         null=True,
     )
     # noinspection PyShadowingBuiltins
     type = models.ForeignKey(
-        MonsterType,
+        MonsterType, models.CASCADE,
         help_text='Subtypes at the bottom of page',
     )
     subtypes = models.ManyToManyField(
@@ -1568,9 +1533,8 @@ class Monster(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'monster_detail', (),
             {
                 'monster_slug': self.slug,
@@ -1580,7 +1544,6 @@ class Monster(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
         return (
             'monster_detail_mobile', (),
@@ -1595,11 +1558,11 @@ class Monster(models.Model):
 
 class MonsterHasFeat(models.Model):
     monster = models.ForeignKey(
-        Monster,
+        Monster, models.CASCADE,
         related_name='feats',
     )
     feat = models.ForeignKey(
-        Feat,
+        Feat, models.CASCADE,
     )
     extra = models.CharField(
         blank=True,
@@ -1609,11 +1572,11 @@ class MonsterHasFeat(models.Model):
 
 class MonsterHasSkill(models.Model):
     monster = models.ForeignKey(
-        Monster,
+        Monster, models.CASCADE,
         related_name='skills',
     )
     skill = models.ForeignKey(
-        Skill,
+        Skill, models.CASCADE,
     )
     ranks = models.PositiveSmallIntegerField(
     )
@@ -1626,11 +1589,11 @@ class MonsterHasSkill(models.Model):
 
 class MonsterSpeed(models.Model):
     race = models.ForeignKey(
-        Monster,
+        Monster, models.CASCADE,
     )
     # noinspection PyShadowingBuiltins
     type = models.ForeignKey(
-        RaceSpeedType,
+        RaceSpeedType, models.CASCADE,
         related_name='+',
     )
     speed = models.PositiveSmallIntegerField()
@@ -1699,16 +1662,14 @@ class RaceType(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'race_type_detail', (),
             {
                 'race_type_slug': self.slug,
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
         return (
             'race_type_detail_mobile', (),
@@ -1734,7 +1695,7 @@ class RaceType(models.Model):
 
 class Race(models.Model):
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     name = models.CharField(
         max_length=32,
@@ -1749,7 +1710,7 @@ class Race(models.Model):
     )
 
     size = models.ForeignKey(
-        RaceSize,
+        RaceSize, models.CASCADE,
     )
     # noinspection PyShadowingBuiltins
     str = models.SmallIntegerField(
@@ -1802,7 +1763,7 @@ class Race(models.Model):
     )
 
     race_type = models.ForeignKey(
-        to=RaceType,
+        to=RaceType, on_delete=models.CASCADE,
         blank=True,
         null=True,
         help_text='Pick from list. Hit Die, Attack bonus and Saves are calculated automatically.',
@@ -1870,9 +1831,8 @@ class Race(models.Model):
     def __unicode__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'race_detail', (),
             {
                 'race_slug': self.slug,
@@ -1882,7 +1842,6 @@ class Race(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
         return (
             'race_detail_mobile', (),
@@ -1917,11 +1876,11 @@ class Race(models.Model):
 
 class RaceSpeed(models.Model):
     race = models.ForeignKey(
-        Race,
+        Race, models.CASCADE,
     )
     # noinspection PyShadowingBuiltins
     type = models.ForeignKey(
-        RaceSpeedType,
+        RaceSpeedType, models.CASCADE,
         related_name='+',
     )
     speed = models.PositiveSmallIntegerField()
@@ -1929,11 +1888,11 @@ class RaceSpeed(models.Model):
 
 class RaceFavoredCharacterClass(models.Model):
     race = models.ForeignKey(
-        Race,
+        Race, models.CASCADE,
         related_name='favored_classes',
     )
     character_class = models.ForeignKey(
-        CharacterClass,
+        CharacterClass, models.CASCADE,
     )
     extra = models.CharField(
         blank=True,
@@ -2039,7 +1998,7 @@ class Item(models.Model):
     )
 
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
     )
     page = models.PositiveSmallIntegerField(
         blank=True,
@@ -2062,14 +2021,14 @@ class Item(models.Model):
         help_text='Used in Magic Item Compendium, NOT CASTER LEVEL!',
     )
     body_slot = models.ForeignKey(
-        ItemSlot,
+        ItemSlot, models.CASCADE,
         blank=True,
         null=True,
         help_text='Only Mundane and Magic Items.',
     )
     # noinspection PyShadowingBuiltins
     property = models.ForeignKey(
-        ItemProperty,
+        ItemProperty, models.CASCADE,
         blank=True,
         null=True,
         help_text='Only Armor and Magic Enhancements.'
@@ -2080,7 +2039,7 @@ class Item(models.Model):
         help_text='Not for Mundane Items.',
     )
     aura = models.ForeignKey(
-        ItemAuraType,
+        ItemAuraType, models.CASCADE,
         blank=True,
         null=True,
         help_text='Not for Mundane Items.',
@@ -2096,7 +2055,7 @@ class Item(models.Model):
         help_text='Not for Mundane Items.',
     )
     activation = models.ForeignKey(
-        ItemActivationType,
+        ItemActivationType, models.CASCADE,
         blank=True,
         null=True,
         help_text='Leave blank for —. Not for Mundane Items.',
@@ -2134,7 +2093,7 @@ class Item(models.Model):
     )
 
     synergy_prerequisite = models.ForeignKey(
-        'Item',
+        'Item', models.CASCADE,
         blank=True,
         null=True,
         help_text='Only Armor and Magic Enhancements.',
@@ -2164,9 +2123,8 @@ class Item(models.Model):
         update_html_cache_attributes(self, 'description')
         super(Item, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'item_detail', (),
             {
                 'item_slug': self.slug,
@@ -2176,7 +2134,6 @@ class Item(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
         return (
             'item_detail_mobile', (),
@@ -2269,7 +2226,7 @@ class Rule(models.Model):
         editable=False,
     )
     rulebook = models.ForeignKey(
-        Rulebook,
+        Rulebook, models.CASCADE,
         blank=False,
         null=False,
     )
@@ -2289,9 +2246,8 @@ class Rule(models.Model):
         update_html_cache_attributes(self, 'body')
         super(Rule, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return (
+        return reverse(
             'rule_detail', (),
             {
                 'rule_slug': self.slug,
@@ -2301,7 +2257,6 @@ class Rule(models.Model):
             }
         )
 
-    @models.permalink
     def get_absolute_url_mobile(self):
         return (
             'rule_detail_mobile', (),

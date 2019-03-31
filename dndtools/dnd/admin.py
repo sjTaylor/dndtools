@@ -273,6 +273,7 @@ class MonsterForm(forms.ModelForm):
     special_qualities = forms.CharField(widget=forms.Textarea)
 
     class Meta:
+        fields = "__all__"
         model = Monster
 
 

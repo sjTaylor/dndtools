@@ -2,7 +2,6 @@
 
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
-from dnd.filters import RulebookFilter
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.dnd_paginator import DndPaginator
 from dnd.models import Rulebook, DndEdition
@@ -12,6 +11,8 @@ from dnd.views import is_3e_edition, permanent_redirect_object
 @menu_item(MenuItem.RULEBOOKS)
 @submenu_item(MenuItem.Rulebooks.RULEBOOKS)
 def rulebook_list(request):
+    # causes errors with empty db if at the top
+    from dnd.filters import RulebookFilter
     f = RulebookFilter(request.GET, queryset=Rulebook.objects.select_related(
         'dnd_edition'))
 
@@ -27,6 +28,7 @@ def rulebook_list(request):
                                   'filter': f,
                                   'form_submitted': form_submitted,
                               }, context_instance=RequestContext(request), )
+
 
 @menu_item(MenuItem.RULEBOOKS)
 @submenu_item(MenuItem.Rulebooks.EDITIONS)
@@ -84,7 +86,7 @@ def edition_detail(request, edition_slug, edition_id):
 def rulebook_detail(request, edition_slug, edition_id, rulebook_slug, rulebook_id):
     rulebook = get_object_or_404(Rulebook, id=rulebook_id)
     if (rulebook.slug != rulebook_slug or
-                unicode(rulebook.dnd_edition.id) != edition_id or
+                str(rulebook.dnd_edition.id) != edition_id or
                 rulebook.dnd_edition.slug != edition_slug):
         return permanent_redirect_object(request, rulebook)
 

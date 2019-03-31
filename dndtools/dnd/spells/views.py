@@ -6,7 +6,6 @@ from django.template.context import RequestContext
 from dnd.menu import MenuItem
 from dnd.menu import menu_item, submenu_item
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import SpellFilter, SpellDomainFilter, SpellDescriptorFilter, SpellFilterAdmin
 from dnd.models import (Rulebook, SpellSchool, SpellDescriptor,
                         SpellSubSchool, Spell, Domain, Rule, DomainVariant)
 from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect_object, is_admin
@@ -15,6 +14,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect
 @menu_item(MenuItem.MAGIC)
 @submenu_item(MenuItem.Magic.SPELLS)
 def spell_index(request):
+    from dnd.filters import SpellFilter, SpellFilterAdmin
     if is_admin(request):
         f = SpellFilterAdmin(request.GET, queryset=Spell.objects.select_related(
             'rulebook', 'rulebook__dnd_edition', 'school', 'verified_author').distinct())
@@ -39,6 +39,7 @@ def spell_index(request):
 @menu_item(MenuItem.MAGIC)
 @submenu_item(MenuItem.Magic.DESCRIPTORS)
 def spell_descriptor_list(request):
+    from dnd.filters import SpellDescriptorFilter
     f = SpellDescriptorFilter(request.GET,
                               queryset=SpellDescriptor.objects.all())
 
@@ -102,7 +103,7 @@ def spell_detail(request, rulebook_slug, rulebook_id, spell_slug, spell_id):
     ), pk=spell_id)
 
     if (spell.slug != spell_slug or
-                unicode(spell.rulebook.id) != rulebook_id or
+                str(spell.rulebook.id) != rulebook_id or
                 spell.rulebook.slug != rulebook_slug):
         return permanent_redirect_object(request, spell)
 
@@ -221,6 +222,7 @@ def spell_sub_school_detail(request, spell_sub_school_slug):
 @menu_item(MenuItem.MAGIC)
 @submenu_item(MenuItem.Magic.DOMAINS)
 def spell_domain_list(request):
+    from dnd.filters import SpellDomainFilter
     f = SpellDomainFilter(request.GET, queryset=Domain.objects.all())
 
     paginator = DndPaginator(f.qs, request)

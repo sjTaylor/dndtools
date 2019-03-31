@@ -4,13 +4,14 @@ from django.template.context import RequestContext
 from dnd.menu import MenuItem, menu_item, submenu_item
 from dnd.views import permanent_redirect_object, permanent_redirect_view, is_3e_edition
 from dnd.dnd_paginator import DndPaginator
-from dnd.filters import SkillFilter
+
 
 from dnd.models import Rulebook, Skill, SkillVariant
 
 @menu_item(MenuItem.CHARACTER_OPTIONS)
 @submenu_item(MenuItem.CharacterOptions.SKILLS)
 def skill_list(request):
+    from dnd.filters import SkillFilter
     f = SkillFilter(request.GET, queryset=Skill.objects.all())
 
     form_submitted = 1 if '_filter' in request.GET else 0
