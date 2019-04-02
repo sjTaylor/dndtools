@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'dnd',
     # '.',
     # 'south',
@@ -74,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django_filters',
                 # added stuff
                 'dnd.context_processors.unread_news',
                 'dnd.context_processors.disable_social',

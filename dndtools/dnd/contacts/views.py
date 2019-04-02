@@ -2,7 +2,7 @@
 from django.core.mail.message import EmailMessage
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from dnd.lazy_refactor import render_to_response
 from django.template.context import RequestContext
 from dnd.menu import menu_item, submenu_item, MenuItem
 from dnd.forms import ContactForm

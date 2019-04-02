@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 # import exceptions
-from django.template.context import Context
+# from django.template.context import Context this was deprecated in django 1.10
+from dnd.lazy_refactor import Context
 from django.template.loader import get_template
 
 

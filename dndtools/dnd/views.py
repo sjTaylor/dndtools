@@ -48,7 +48,7 @@ def index(request):
     # response = render_to_response('dnd/index.html',
     #                               ,
     #                               context_instance=RequestContext(request), )
-    context = {'news_entries': news_entries, }
+    context = {'request': request, 'news_entries': news_entries, }
 
     response = render(request, 'dnd/index.html', context)
 

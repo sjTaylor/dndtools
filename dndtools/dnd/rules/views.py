@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
+from dnd.lazy_refactor import render_to_response
 from django.template import RequestContext
 from dnd.dnd_paginator import DndPaginator
 from dnd.menu import menu_item, MenuItem, submenu_item

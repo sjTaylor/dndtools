@@ -1,5 +1,6 @@
 # Create your views here.
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404
+from dnd.lazy_refactor import render_to_response
 from django.template.context import RequestContext
 from dnd.menu import MenuItem
 from dnd.menu import menu_item, submenu_item
