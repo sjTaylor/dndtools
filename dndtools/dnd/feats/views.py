@@ -104,7 +104,7 @@ def feat_detail(request, rulebook_slug, rulebook_id, feat_slug, feat_id):
         Feat.objects.select_related('rulebook', 'rulebook__dnd_edition'),
         pk=feat_id)
     if (feat.slug != feat_slug or
-                unicode(feat.rulebook.id) != rulebook_id or
+                str(feat.rulebook.id) != rulebook_id or
                 feat.rulebook.slug != rulebook_slug):
         return permanent_redirect_object(request, feat)
 
