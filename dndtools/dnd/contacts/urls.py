@@ -1,32 +1,32 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
 from dnd.contacts.views import *
+from django.urls import path
 
 urlpatterns = (
     # 'dnd.contacts.views',
 
     # contact
-    url(
-        r'^$',
+    path(
+        '',
         contact,
         name='contact',
     ),
     # contact > sent
-    url(
-        r'^sent/$',
+    path(
+        'sent/',
         contact_sent,
         name='contact_sent',
     ),
     # staff
-    url(
-        r'^staff/$',
+    path(
+        'staff/',
         staff,
         name='staff',
     ),
     # android
-    url(
-        r'^android/$',
+    path(
+        'android/',
         android,
         name='android',
     ),

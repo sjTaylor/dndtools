@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
+from django.urls import path
 import dnd.spells.views as views
 
 
@@ -8,75 +8,75 @@ urlpatterns = (
     # 'dnd.spells.views',
 
     # spells
-    url(
-        r'^$',
-        getattr(views, 'spell_index'),
+    path(
+        '',
+        views.spell_index,
         name='spell_index',
     ),
     # spells > rulebook
-    url(
-        r'^(?P<rulebook_slug>[^/]+)--(?P<rulebook_id>\d+)/$',
+    path(
+        '<rulebook_slug>--<rulebook_id>/',
         getattr(views, 'spells_in_rulebook'),
         name='spells_in_rulebook',
     ),
     # spells > rulebook > spell
-    url(
-        r'^(?P<rulebook_slug>[^/]+)--(?P<rulebook_id>\d+)/(?P<spell_slug>[^/]+)--(?P<spell_id>\d+)/$',
+    path(
+        '<rulebook_slug>--<rulebook_id>/<spell_slug>--<spell_id>/',
         getattr(views, 'spell_detail'),
         name='spell_detail',
     ),
     # spells > descriptors
-    url(
-        r'^descriptors/$',
+    path(
+        'descriptors/',
         getattr(views, 'spell_descriptor_list'),
         name='spell_descriptor_list',
     ),
     # spells > descriptors > descriptor
-    url(
-        r'^descriptors/(?P<spell_descriptor_slug>[^/]+)/$',
+    path(
+        'descriptors/<spell_descriptor_slug>/',
         getattr(views, 'spell_descriptor_detail'),
         name='spell_descriptor_detail',
     ),
     # spells > schools
-    url(
-        r'^schools/$',
+    path(
+        'schools/',
         getattr(views, 'spell_school_list'),
         name='spell_school_list',
     ),
     # spells > schools > detail
-    url(
-        r'^schools/(?P<spell_school_slug>[^/]+)/$',
+    path(
+        'schools/<spell_school_slug>/',
         getattr(views, 'spell_school_detail'),
         name='spell_school_detail',
     ),
     # spells > sub_schools > detail
-    url(
-        r'^sub-schools/(?P<spell_sub_school_slug>[^/]+)/$',
+    path(
+        'sub-schools/<spell_sub_school_slug>/',
         getattr(views, 'spell_sub_school_detail'),
         name='spell_sub_school_detail',
     ),
     # spells > domains
-    url(
-        r'^domains/$',
+    path(
+        'domains/',
         getattr(views, 'spell_domain_list'),
         name='spell_domain_list',
     ),
     # spells > domains > detail
-    url(
-        r'^domains/(?P<spell_domain_slug>[^/]+)/$',
+    path(
+        'domains/<spell_domain_slug>/',
         getattr(views, 'spell_domain_detail'),
         name='spell_domain_detail',
     ),
 
     # spells > domains > detail (variant)
-    url(
-        r'^domains/(?P<rulebook_slug>[^/]+)--(?P<rulebook_id>\d+)/(?P<spell_domain_slug>[^/]+)/$',
+    path(
+        'domains/<rulebook_slug>--<rulebook_id>/<spell_domain_slug>/',
         getattr(views, 'spell_domain_detail'),
         name='spell_variant_domain_detail',
     ),
 
-    url(
-        r'^verify/spell/(?P<spell_id>\d+)/$',
+    path(
+        'verify/spell/<spell_id>/',
         getattr(views, 'spell_verify'),
         name='spell_verify',
     ),

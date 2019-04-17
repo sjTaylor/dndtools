@@ -9,7 +9,6 @@ from .feeds import AdminLogFeed
 from .sitemap import sitemaps
 from .views import index
 from dndproject import settings
-# from .rulebooks.urls import urlpatterns as featpatterns
 
 from dnd.views import inaccurate_content, inaccurate_content_sent, very_secret_url
 
@@ -18,8 +17,8 @@ from dnd.views import inaccurate_content, inaccurate_content_sent, very_secret_u
 urlpatterns = [
 
     # index
-    url(
-        r'^$',
+    path(
+        '',
         index,
         name='index',
     ),
@@ -66,14 +65,14 @@ urlpatterns = [
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 
     # inaccurate
-    url(
-        r'^inaccurate_content/$',
+    path(
+        'inaccurate_content/',
         inaccurate_content,
         name='inaccurate_content',
     ),
     # inaccurate > sent
-    url(
-        r'^inaccurate_content/sent/$',
+    path(
+        'inaccurate_content/sent/',
         inaccurate_content_sent,
         name='inaccurate_content_sent',
     ),
@@ -94,8 +93,8 @@ urlpatterns = [
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
-    url('^contact/$', RedirectView.as_view(url='/contacts/')),
-    url('^staff/$', RedirectView.as_view(url='/contacts/staff/')),
-    url('^editions/$', RedirectView.as_view(url='/rulebooks/editions/')),
-    url('^feat-(?P<feat_id>\d+)-(.*)\.html$', RedirectView.as_view(url='/feats/a--1/a--%(feat_id)s/')),
+    path('contact/', RedirectView.as_view(url='/contacts/')),
+    path('staff/', RedirectView.as_view(url='/contacts/staff/')),
+    path('editions/', RedirectView.as_view(url='/rulebooks/editions/')),
+    url(r'^feat-(?P<feat_id>\d+)-(.*)\.html$', RedirectView.as_view(url='/feats/a--1/a--%(feat_id)s/')),
 ]

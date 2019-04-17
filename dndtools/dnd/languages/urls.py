@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
+from django.urls import path
 from dnd.languages.views import *
 
 urlpatterns = (
     # 'dnd.languages.views',
 
     # languages
-    url(
-        r'^$',
+    path(
+        '',
         language_index,
         name='language_index'
     ),
     # languages > detail
-    url(
-        r'^(?P<language_slug>[^/]+)/$',
+    path(
+        '<language_slug>/',
         language_detail,
         name='language_detail'
     ),

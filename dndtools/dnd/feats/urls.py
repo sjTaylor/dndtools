@@ -1,38 +1,38 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
+from django.urls import path
 import dnd.feats.views as views
 
 urlpatterns = [
     # 'dnd.feats.views',
 
     # feats
-    url(
-        r'^$',
+    path(
+        '',
         getattr(views, 'feat_index'),
         name='feat_index',
     ),
     # feats > categories
-    url(
-        r'^categories/$',
+    path(
+        'categories/',
         getattr(views, 'feat_category_list'),
         name='feat_category_list',
     ),
     # feats > categories > category
-    url(
-        r'^categories/(?P<category_slug>[^/]+)/$',
+    path(
+        'categories/<category_slug>/',
         getattr(views, 'feat_category_detail'),
         name='feat_category_detail',
     ),
     # feats > rulebook
-    url(
-        r'^(?P<rulebook_slug>[^/]+)--(?P<rulebook_id>\d+)/$',
+    path(
+        '<rulebook_slug>--<rulebook_id>/',
         getattr(views, 'feats_in_rulebook'),
         name='feats_in_rulebook',
     ),
     # feats > rulebook > feat
-    url(
-        r'^(?P<rulebook_slug>[^/]+)--(?P<rulebook_id>\d+)/(?P<feat_slug>[^/]+)--(?P<feat_id>\d+)/$',
+    path(
+        '<rulebook_slug>--<rulebook_id>/<feat_slug>--<feat_id>/',
         getattr(views, 'feat_detail'),
         name='feat_detail',
     ),
