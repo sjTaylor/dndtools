@@ -3,7 +3,7 @@
 from PIL import Image
 from django.contrib.auth.models import User
 from django.db import models
-from django.urls import reverse
+from dnd.lazy_refactor import reverse
 
 from .utilities import update_html_cache_attributes
 

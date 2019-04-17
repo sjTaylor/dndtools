@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse as django_reverse
 
 
 # render_to_response
@@ -13,3 +14,7 @@ def render_to_response(template, context, context_instance):
 # noinspection PyPep8Naming
 def Context(context):
     return context
+
+
+def reverse(viewname, foo, args):
+    return django_reverse(viewname=viewname, kwargs=args)
