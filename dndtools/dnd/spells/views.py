@@ -99,8 +99,7 @@ def spells_in_rulebook(request, rulebook_slug, rulebook_id):
 @submenu_item(MenuItem.Magic.SPELLS)
 def spell_detail(request, rulebook_slug, rulebook_id, spell_slug, spell_id):
     spell = get_object_or_404(Spell.objects.select_related(
-        'rulebook', 'rulebook__dnd_edition', 'school', 'sub_school',
-        'class_levels'
+        'rulebook__dnd_edition', 'school', 'sub_school'
     ), pk=spell_id)
 
     if (spell.slug != spell_slug or
@@ -109,10 +108,10 @@ def spell_detail(request, rulebook_slug, rulebook_id, spell_slug, spell_id):
         return permanent_redirect_object(request, spell)
 
     spell_class_level_set = spell.spellclasslevel_set.select_related(
-        'rulebook', 'character_class',
+        'character_class',
     ).all()
     spell_domain_level_set = spell.spelldomainlevel_set.select_related(
-        'rulebook', 'domain',
+        'domain',
     ).all()
 
     # related spells
@@ -244,8 +243,7 @@ def spell_domain_list(request):
 @submenu_item(MenuItem.Magic.DOMAINS)
 def spell_domain_detail(request, spell_domain_slug, rulebook_slug=None, rulebook_id=None):
     # fetch the class
-    spell_domain = get_object_or_404(Domain.objects.select_related(
-        'domain_variant', 'domain_variant__rulebook'), slug=spell_domain_slug)
+    spell_domain = get_object_or_404(Domain, slug=spell_domain_slug)
 
     # fetch primary variant, this is independent of rulebook selected
     try:
@@ -286,7 +284,7 @@ def spell_domain_detail(request, spell_domain_slug, rulebook_slug=None, rulebook
         variant
         for variant
         in spell_domain.domainvariant_set.select_related(
-            'rulebook', 'rulebook__dnd_edition', 'spell_domain').all()
+            'rulebook', 'rulebook__dnd_edition').all()
         if variant != selected_variant
     ]
 

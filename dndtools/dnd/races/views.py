@@ -15,7 +15,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view
 def race_index(request):
     from dnd.filters import RaceFilter
     f = RaceFilter(request.GET, queryset=Race.objects.select_related(
-        'rulebook', 'rulebook__dnd_edition', 'school').distinct())
+        'rulebook', 'rulebook__dnd_edition').distinct())
 
     paginator = DndPaginator(f.qs, request)
 
@@ -75,8 +75,8 @@ def races_in_rulebook(request, rulebook_slug, rulebook_id):
 @submenu_item(MenuItem.Bestiary.RACES)
 def race_detail(request, rulebook_slug, rulebook_id, race_slug, race_id):
     race = get_object_or_404(
-        Race.objects.select_related('rulebook', 'rulebook__dnd_edition', 'size', 'automatic_languages',
-                                    'bonus_languages', 'race_type'),
+        Race.objects.select_related('rulebook', 'rulebook__dnd_edition', 'size',
+                                    'race_type'),
         pk=race_id)
     assert isinstance(race, Race)
 

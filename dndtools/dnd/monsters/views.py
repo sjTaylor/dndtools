@@ -13,7 +13,7 @@ from dnd.views import is_3e_edition, permanent_redirect_view, permanent_redirect
 def monster_index(request):
     from dnd.filters import MonsterFilter
     f = MonsterFilter(request.GET, queryset=Monster.objects.select_related(
-        'rulebook', 'rulebook__dnd_edition', 'school').distinct())
+        'rulebook', 'rulebook__dnd_edition').distinct())
 
     paginator = DndPaginator(f.qs, request)
 
