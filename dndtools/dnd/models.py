@@ -173,10 +173,35 @@ class CharacterClassVariant(models.Model):
         null=True,
         blank=True,
     )
+    advancement = models.TextField(
+        blank=True,
+        help_text='Textile enabled! (bit.ly/JigkFt)',
+    )
+    advancement_html = models.TextField(
+        editable=False,
+        blank=True,
+    )
+    class_features = models.TextField(
+        blank=True,
+        help_text='Textile enabled!',
+    )
+    class_features_html = models.TextField(
+        editable=False,
+        blank=True,
+    )
     skill_points = models.PositiveSmallIntegerField(
         blank=True,
         null=True,
         help_text='X + Int modifier',
+    )
+    hit_die = models.PositiveSmallIntegerField(
+        help_text='For d4 write 4 etc.',
+        blank=True,
+        null=True,
+    )
+    alignment = models.CharField(
+        blank=True,
+        max_length=256,
     )
     class_skills = models.ManyToManyField(
         'Skill',
@@ -195,23 +220,6 @@ class CharacterClassVariant(models.Model):
         null=True,
         help_text='Results in Base Attack Bonus: +x',
     )
-    class_features = models.TextField(
-        blank=True,
-        help_text='Textile enabled!',
-    )
-    class_features_html = models.TextField(
-        editable=False,
-        blank=True,
-    )
-    hit_die = models.PositiveSmallIntegerField(
-        help_text='For d4 write 4 etc.',
-        blank=True,
-        null=True,
-    )
-    alignment = models.CharField(
-        blank=True,
-        max_length=256,
-    )
     starting_gold = models.CharField(
         blank=True,
         max_length=32,
@@ -219,17 +227,8 @@ class CharacterClassVariant(models.Model):
                   'in PHB for more info. Do not put in Average gold amount.'
     )
 
-    advancement = models.TextField(
-        blank=True,
-        help_text='Textile enabled! (bit.ly/JigkFt)',
-    )
-    advancement_html = models.TextField(
-        editable=False,
-        blank=True,
-    )
-
     class Meta:
-        unique_together = (("character_class", "rulebook",))
+        unique_together = ("character_class", "rulebook",)
         ordering = ['character_class__name', ]
 
     def save(self, *args, **kwargs):

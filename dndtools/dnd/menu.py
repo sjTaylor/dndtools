@@ -66,7 +66,6 @@ class MenuItem:
         MONSTROUS_TRAITS = "monstrous_traits"
         TEMPLATES = "templates"
 
-
     ITEMS = "items"
 
     class Items:

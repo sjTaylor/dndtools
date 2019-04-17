@@ -6,7 +6,6 @@ from dnd.models import (
     Skill)
 
 
-
 class DndEditionSitemap(Sitemap):
     def items(self):
         return DndEdition.objects.all()
