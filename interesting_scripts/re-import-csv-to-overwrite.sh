@@ -13,9 +13,8 @@ echo "processing ${T}"
 
 sqlite3 $1 <<!
 DELETE FROM $T;
-.headers on
 .mode csv
-.import conv/$T.csv $T
+.import dumped/$T.csv $T
 !
 
 done
