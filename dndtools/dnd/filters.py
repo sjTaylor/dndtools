@@ -9,15 +9,16 @@ from dnd.filters_fields import FeatMultiPrerequisiteFieldFilter
 
 
 def rulebook_choices(unknown_entry=True):
-    rulebook_choices = [
-        (edition.name,
-         [(rulebook.slug, rulebook.name)
-          for rulebook in edition.rulebook_set.all()])
-        for edition in DndEdition.objects.all()]
+    # this is a bit easier to read
+    choices = []
+    for edition in DndEdition.objects.prefetch_related('rulebook_set').all():
+        rulebooks = []
+        for rulebook in edition.rulebook_set.all():
+            rulebooks.append((rulebook.slug, rulebook.name))
+        choices.append((edition.name, rulebooks))
     if unknown_entry:
-        rulebook_choices.insert(0, ('', 'Unknown'))
-
-    return rulebook_choices
+        choices.insert(0, ('', 'Unknown'))
+    return choices
 
 
 def edition_choices(unknown_entry=True):
