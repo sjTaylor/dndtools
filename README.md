@@ -23,15 +23,16 @@ To install DnDTools, run the following commands:
 
 ```sh
 # Clone the repository 
-git clone https://github.com/dndtools/dndtools.git
+`clone repository here`
+
+# change dir into source folder
 cd dndtools/
 
 # Create a Python Virtual environment in env/ and enables it
-virtualenv --python=python2.7 env
-source env/bin/activate
+virtualenv --python=python3 env
 
-# First we have to install an old version of django-reversion, which is not in PyPI
-pip install https://github.com/etianen/django-reversion/archive/release-1.3.3.zip
+# activate environment
+source env/bin/activate
 
 # Then install all the requirements from the PyPI
 pip install -r requirements.txt
@@ -39,6 +40,9 @@ pip install -r requirements.txt
 # Copy the default settings for development
 cd dndtools/
 cp dndproject/local.py.sample dndproject/local.py
+
+
+TODO: check correctness of the below steps
 
 # Sync the database. You will be asked to create a user.
 # The "--all" means that even tables based on migrations will be synced.
