@@ -16,8 +16,7 @@
                     {% for required_race in required_races %}
                         {% if not forloop.first and not required_race.remove_comma %}or{% endif %}
                         {{ required_race.text_before }}
-{#                        <a href="{{ required_race.race.get_absolute_url }}">{{ required_race.race }}</a>#}
-                        {{ required_race.race }}
+                        <a href="{{ required_race.race.get_absolute_url }}">{{ required_race.race.name }}</a>
                         {% if required_race.extra %}({{ required_race.extra }}){% endif %}
                         {{ required_race.text_after }}
                     {% endfor %}
